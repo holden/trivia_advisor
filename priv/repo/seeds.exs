@@ -25,6 +25,10 @@ sources = [
   %{
     name: "inquizition",
     website_url: "https://inquizition.com"
+  },
+  %{
+    name: "quizmeisters",
+    website_url: "https://quizmeisters.com"
   }
 ]
 
