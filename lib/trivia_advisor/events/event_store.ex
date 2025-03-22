@@ -58,11 +58,15 @@ defmodule TriviaAdvisor.Events.EventStore do
                 root_name = Path.rootname(upload.filename)
                 filename_without_query = root_name |> String.split("?") |> List.first()
 
+                # Re-normalize the filename to ensure consistent format between S3 and database
+                alias TriviaAdvisor.Scraping.Helpers.ImageDownloader
+                normalized_filename = ImageDownloader.normalize_filename(filename_without_query)
+
                 # Only add extension if the filename doesn't already end with it
-                new_filename = if String.ends_with?(String.downcase(filename_without_query), detected_ext) do
-                  filename_without_query
+                new_filename = if String.ends_with?(String.downcase(normalized_filename), detected_ext) do
+                  normalized_filename
                 else
-                  filename_without_query <> detected_ext
+                  normalized_filename <> detected_ext
                 end
 
                 # Create the new Plug.Upload struct with the corrected filename
